@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RollCall — Attendance Tracker</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="bg-gradient"></div>
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <div class="app">
+    <header class="header glass-card">
+      <div class="header-content">
+        <div class="logo">
+          <span class="logo-icon">✦</span>
+          <h1>RollCall</h1>
+        </div>
+        <p class="tagline">Premium attendance tracking</p>
+      </div>
+      <div class="student-badge" id="studentCountBadge">
+        <span class="badge-label">Students</span>
+        <span class="badge-value" id="studentCount">0</span>
+      </div>
+    </header>
+
+    <nav class="tabs glass-card" role="tablist">
+      <button class="tab active" data-tab="upload" role="tab" aria-selected="true">
+        <span class="tab-icon">📤</span>
+        Upload Students
+      </button>
+      <button class="tab" data-tab="attendance" role="tab" aria-selected="false">
+        <span class="tab-icon">✓</span>
+        Take Attendance
+      </button>
+      <button class="tab" data-tab="report" role="tab" aria-selected="false">
+        <span class="tab-icon">📊</span>
+        Monthly Report
+      </button>
+    </nav>
+
+    <main class="main-content">
+      <!-- Upload Tab -->
+      <section id="upload" class="panel active" role="tabpanel">
+        <div class="glass-card panel-card hover-3d">
+          <h2>Upload Student List</h2>
+          <p class="panel-desc">Import an Excel (.xlsx) or CSV file. The first column should be <strong>Name</strong>, with data starting from row 2.</p>
+
+          <div class="upload-zone" id="uploadZone">
+            <input type="file" id="fileInput" accept=".xlsx,.xls,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv" hidden>
+            <div class="upload-icon">📁</div>
+            <p>Drag & drop your file here, or</p>
+            <button type="button" class="btn btn-primary" id="browseBtn">Browse Files</button>
+            <p class="upload-hint">Supports .xlsx, .xls, .csv</p>
+          </div>
+
+          <div id="uploadMessage" class="message" hidden></div>
+
+          <div class="student-preview" id="studentPreview" hidden>
+            <h3>Loaded Students</h3>
+            <ul id="studentList" class="student-chips"></ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Attendance Tab -->
+      <section id="attendance" class="panel" role="tabpanel" hidden>
+        <div class="glass-card panel-card hover-3d">
+          <div class="panel-header-row">
+            <h2>Take Attendance</h2>
+            <div class="date-picker-wrap">
+              <label for="attendanceDate">Date</label>
+              <input type="date" id="attendanceDate" class="input-date">
+            </div>
+          </div>
+
+          <div id="attendanceMessage" class="message" hidden></div>
+
+          <div id="noStudentsMsg" class="empty-state" hidden>
+            <span class="empty-icon">👥</span>
+            <p>No students loaded yet.</p>
+            <button type="button" class="btn btn-secondary" data-goto="upload">Upload Students</button>
+          </div>
+
+          <div id="attendanceList" class="attendance-list"></div>
+
+          <div class="action-bar" id="attendanceActions" hidden>
+            <div class="stats-row">
+              <span class="stat present-stat"><span id="presentCount">0</span> Present</span>
+              <span class="stat absent-stat"><span id="absentCount">0</span> Absent</span>
+              <span class="stat unmarked-stat"><span id="unmarkedCount">0</span> Unmarked</span>
+            </div>
+            <button type="button" class="btn btn-primary btn-save" id="saveAttendance">
+              Save Attendance
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Report Tab -->
+      <section id="report" class="panel" role="tabpanel" hidden>
+        <div class="glass-card panel-card hover-3d">
+          <div class="panel-header-row">
+            <h2>Monthly Report</h2>
+            <div class="month-picker-wrap">
+              <label for="reportMonth">Month</label>
+              <input type="month" id="reportMonth" class="input-date">
+            </div>
+          </div>
+
+          <div id="reportMessage" class="message" hidden></div>
+
+          <div id="noReportData" class="empty-state" hidden>
+            <span class="empty-icon">📋</span>
+            <p>No attendance data for this month.</p>
+          </div>
+
+          <div id="reportTableWrap" class="table-wrap" hidden>
+            <table class="report-table" id="reportTable">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Days Present</th>
+                  <th>Total Days</th>
+                  <th>Percentage</th>
+                </tr>
+              </thead>
+              <tbody id="reportTableBody"></tbody>
+            </table>
+          </div>
+
+          <div class="action-bar" id="reportActions" hidden>
+            <button type="button" class="btn btn-primary" id="downloadReport">
+              <span>⬇</span> Download Report
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>Data stored locally in your browser</p>
+    </footer>
+  </div>
+
+  <script src="xlsx.full.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
